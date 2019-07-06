@@ -81,8 +81,58 @@ kill命令的使用
 top命令
 相当于windows下的window管理器
 
-   
-   
+网络命令
+ifconflg 网络信息
+MAC地址 硬件地址 inet
+ping  另一台主机的ip   测试两台主机之间能不能通信
+也可以直接ping 网址
+nslookup 网站 显示这个网站的信息
+
+
+用户管理
+sudo addusers 名称 添加一个新的用户（名称不要大写）
+su 名称            切换用户
+
+手动更新的话，名称可以大写
+方法如下：（
+sudo groupadd Robin  // 创建新的组
+sudo useradd -s /bin/bash -g /home/Robin -m Robin
+）
+sudo passwd Robin  //修改Robin的密码
+sudo deluser  名称  //删除用户（这样目录还存在，可以通过sudo rm -r baozheng/ 来实现）
+vi /etc/passwd // 查看账户是否创建成功
+
+ftp服务器的搭建
+功能：负责文件的上传和下载
+一，服务器端
+  1.修改配置文件  --如何修改配置文件
+   cd /etc    //进入etc 目录
+   ls -l vsftpd.conf  // 要修改的配置文件
+   sudo gedit vsftpd.conf // 以文本文档的格式打开文件
+   修改{
+   listen=NO          改成YES
+   an onymous_enable=NO 改成YES （允许匿名登录）
+   #write_enable=YES 把前面的 # 给去掉 (实名登录用户拥有写的权限)
+   #local_unmask=022 把前面的 # 给去掉 （设置本地掩码为022）
+   #anon_upload_enable=YES 把前面的 # 给去掉 （匿名用户可以向ftp服务器上传数据）
+   #anon_mkdir_write_enable=YES 把前面的 # 给去掉 （匿名用户可以在ftp服务器上创建目录）
+   }
+  2，重启服务     --什么命令能够重启服务
+  sudo service vsftpd restart
+二，客户端
+  1，实名用户登录
+   ftp IP(服务器的IP)
+   退出是 bye
+   输入用户名（当前用户）
+   输入密码（当前用户密码）
+   文件的上传和下载
+     put file
+      
+  2，匿名用户登录
+  3，lftp客户端访问ftp服务器
+  
+
+
 
  
   
