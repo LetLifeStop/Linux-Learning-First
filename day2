@@ -162,7 +162,7 @@ nfs服务器的搭建
 二，客户端
    挂载服务器的共享目录
    sudo mount serverIP(服务器的IP):sharedir（共享的目录名） /mnt（挂载到哪个位置）
-   nfsshare 有问题
+   nfsshare 有问题(我沙雕了，把服务器和客户端搞在一起了)
    http://www.heminjie.com/system/linux/2998.html
    access denied by server while mounting 192.168.1.178:/文件名
 ssh服务器
