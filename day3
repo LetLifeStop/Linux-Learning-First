@@ -7,7 +7,7 @@ echo str
 echo $PATH
   打印环境变量（$ 从变量中取值）
 sudo poweroff 关机
-sudo robbot 重新启动
+sudo reboot 重新启动
 vim 是从vi发展过来的文本编译器
   前提：安装了vim
  工作模式：
