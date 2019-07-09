@@ -1,5 +1,5 @@
 man man 帮助手册
-
+man 2 open 查看第二章open函数
 alias 查看linux的标准命令
  alias ls 对应的封装函数
 echo str
