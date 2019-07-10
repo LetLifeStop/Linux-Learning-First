@@ -89,7 +89,7 @@ truncate函数 拓展文件
 #include<string.h>
 int getFileNum(char* root)  {
 	DIR* dir = NULL;
-	dir = opendir(root);
+	dir = opendir(root); // 判断当前目录是否存在
 	if(dir == NULL){
 	perror("opendir");  
 	return -1;
@@ -97,8 +97,8 @@ int getFileNum(char* root)  {
 	char path[1024] = {0};  
     int tot = 0;
 	struct dirent* ptr = NULL;
-	while( (ptr = readdir(dir) )!= NULL){
-        if(strcmp(ptr->d_name , ".") == 0 || strcmp(ptr->d_name,"..") ==0){
+	while( (ptr = readdir(dir) )!= NULL){  // 赋值
+        if(strcmp(ptr->d_name , ".") == 0 || strcmp(ptr->d_name,"..") ==0){ // 避免死循环
 			  continue;
 		}
 		if(ptr->d_type == DT_DIR){
@@ -109,8 +109,8 @@ int getFileNum(char* root)  {
 			  tot++;
 		}
 		}  
-   closedir(dir);
-   return tot;
+   closedir(dir); // 关闭目录
+   return tot; 
 }
 int main(int argc ,char* argv[])  {
 	  if(argc < 2){
@@ -121,7 +121,7 @@ int main(int argc ,char* argv[])  {
 	printf("%s has file numners %d\n",argv[1],tot);
 	return 0;
 }
-
+运行方法：sudo ./FileNum ~
 
 dup，dup2函数
   复制现有的文件描述符
@@ -130,5 +130,10 @@ dup，dup2函数
  (进行一个覆盖，如果说原来的第一行字符串长度是13，然后要覆盖他的字符串长度是10，这样的话，后面10~13还是没有被覆盖的)
 （这个覆盖并不是清空）
  理解函数的参数
-
-  
+fcntl函数 改变已经打开文件的属性（读写操作权限）
+ 打开文件的时候：只读
+   修改文件的读写操作权限 O_APPEND
+ 复制一个现有的描述符  
+ 获得/设置文件描述符标记
+ （重要）获得/设置文件状态标记 
+ 或者/设置异步I/O所有权
