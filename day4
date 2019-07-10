@@ -71,6 +71,17 @@ C库IO函数工作流程
  fd == -1 // 发生错误
  perror("open file") // 打印错误信息
  close（fd）;关闭文件
+ O_REUNC 将文件截断为0
+ fd = open("myhello",o_RDWR | O_CREAT | o_EXCL（后两个同时使用可以判断当前文件是否存在）, 777)  open创建新的myhello文件
+ 文件的权限，本地有一个掩码，
+ 文件的实际权限 =  给定的权限 & 本地掩码取反.
+ unmask 022 把掩码变成了022
+  
+ read函数
+  返回值 -1 读文件失败
+  返回值  0 读完
+  返回值  >0 读取的字节数
+ lseek函数
  
-    
+ 
     
