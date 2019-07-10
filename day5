@@ -1,0 +1,68 @@
+read_write函数读写文件
+open的使用：
+ #include<stdio.h>
+ #include<sys/stat.h>
+ #include<fcntl.h>
+ #include<unsitd.h>
+ #include<stdlib.h>
+ #include<sys/types.h>
+ int main(){
+  int fd = open("english.txt",O_RDONLY);
+  // 打开一个已经存在的文件
+  if(fd==-1){
+   perror("open");
+   exit(1);
+  }
+   
+  int fd1 =  open("newfile",O_CREAT | O_WRONLY , 0664);
+  if(fd == -1){
+     perror("open1");
+   exit(1);
+   } 
+  char buf[2048] = {0};
+  int count = read(fd ,buf ,sizeof(buf));
+  //每次从文件中读取两个byte
+  if（count == -1）{
+   perror("read");
+   exit(1);
+  }
+  while(count){
+  读出的文件写到另外的文件中
+  int ret = wirte(fd1,buf,count)；
+   // ret代表写入的字节数
+   count = read(fd,buf,sizeof(buf));
+   // 将读出的数据写到另一个文件中
+  }
+  close(fd);
+  close(fd1);
+return 0;  
+}
+ 编译 gcc read_write.c -o readwrite
+ 运行 ./readwrite  
+lseek的使用
+  int ret = lseek(fd , 0 ,SEEK_END);//获取文件长度
+ 实现文件拓展（只能往后拓展）
+  步骤1> int ret = lseek(fd,2000,SEEK_END); // 从文件最后向后拓展2000个byte
+  步骤2>  write(fd , "a", 1); //额外进行一个写操作       
+    需要额外进行一个写操作
+linux文件操作函数
+ stat 文件名 获取文件属性信息
+**stat函数 查看man文档学习，追踪函数（通过软链接找到最终的文件信息）**
+lstat函数 不追踪
+fstat函数 在stat的基础上加上一个文件描述符
+st_mode
+判断类型可以 & 上一个掩码
+ 理解追踪和不追踪 
+access测试文件是否拥有某种权限
+chown函数改变文件所有者
+strtol函数把一个字符串转换成整形
+truncate函数 拓展文件
+
+关于链接的函数
+ link函数 创建硬链接
+ symlink函数  创建软链接
+ readlink函数 读取一个软链接的路径
+ 
+ 
+ 理解函数的参数
+  
