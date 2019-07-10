@@ -51,7 +51,7 @@ linux文件操作函数
 lstat函数 不追踪
 fstat函数 在stat的基础上加上一个文件描述符
 st_mode
-判断类型可以 & 上一个掩码
+判断类型可以 & 上一个掩码 （通过掩码判断文件的类型）
  理解追踪和不追踪 
 access测试文件是否拥有某种权限
 chown函数改变文件所有者
@@ -62,7 +62,73 @@ truncate函数 拓展文件
  link函数 创建硬链接
  symlink函数  创建软链接
  readlink函数 读取一个软链接的路径
+ unlink函数  删除一个普通文件（软链接和硬链接（硬链接可以类似看成文件）） 每执行一次，这个文件的硬链接计数 -1，当为0的时候
+ 释放内存.
+  程序执行完之后被删除；当我们需要临时创建一个文件进行测试时，是用完之后可以通过unlink函数来删除掉这个文件.
+  目录操作：
+ chdir函数 修改当前进程的执行路径
+ getcwd函数 获取当前进程的路径
+ mkdir函数  创建目录（注意赋予执行权限）
+ rmdir函数  删除空目录
+ opendir函数 打开一个目录（返回一个目录指针，打开失败返回null）（注意 . 和 .. 会进入死循环）
+ readdir函数 读目录  （返回一个记录项）
+ closedir函数 关闭一个目录 
  
- 
+ 试手代码：
+ /*************************************************************************
+    > File Name: MyFileNum.c
+    > Author: ma6174
+    > Mail: ma6174@163.com 
+    > Created Time: 2019年07月10日 星期三 16时28分43秒
+ ************************************************************************/
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<sys/types.h>
+#include<dirent.h>
+#include<string.h>
+int getFileNum(char* root)  {
+	DIR* dir = NULL;
+	dir = opendir(root);
+	if(dir == NULL){
+	perror("opendir");  
+	return -1;
+	}
+	char path[1024] = {0};  
+    int tot = 0;
+	struct dirent* ptr = NULL;
+	while( (ptr = readdir(dir) )!= NULL){
+        if(strcmp(ptr->d_name , ".") == 0 || strcmp(ptr->d_name,"..") ==0){
+			  continue;
+		}
+		if(ptr->d_type == DT_DIR){
+			sprintf(path,"%s/%s",root,ptr->d_name); 
+		tot += getFileNum(path);  
+		}
+		if(ptr->d_type == DT_REG){
+			  tot++;
+		}
+		}  
+   closedir(dir);
+   return tot;
+}
+int main(int argc ,char* argv[])  {
+	  if(argc < 2){
+		    printf("./a.out dir\n");
+			exit(1);  
+	  }
+    int tot = getFileNum(argv[1]);
+	printf("%s has file numners %d\n",argv[1],tot);
+	return 0;
+}
+
+
+dup，dup2函数
+  复制现有的文件描述符
+ dup函数 返回新的文件描述表中最小的没有被占用的描述符
+ dup2函数 提供两个文件描述符，new的拷贝old.如果new是被打开的状态，new会先关闭；如果new == old ，不会关闭new，直接返回old.
+ (进行一个覆盖，如果说原来的第一行字符串长度是13，然后要覆盖他的字符串长度是10，这样的话，后面10~13还是没有被覆盖的)
+（这个覆盖并不是清空）
  理解函数的参数
+
   
